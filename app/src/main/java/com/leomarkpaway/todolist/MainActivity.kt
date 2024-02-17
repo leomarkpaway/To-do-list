@@ -1,11 +1,16 @@
 package com.leomarkpaway.todolist
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import androidx.activity.viewModels
+import com.leomarkpaway.todolist.common.base.BaseActivity
+import com.leomarkpaway.todolist.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : BaseActivity<TodoListViewModel, ActivityMainBinding>() {
+    override val viewModel: TodoListViewModel by viewModels()
+    override fun inflateBinding() = ActivityMainBinding.inflate(layoutInflater)
+
+    override fun setupViews() {
+    }
+
+    override fun subscribe() {
     }
 }
