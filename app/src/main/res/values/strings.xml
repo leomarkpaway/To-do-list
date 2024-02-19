@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">To do list</string>
+    <string name="search">Search</string>
+    <string name="today_s_tasks">Today\'s tasks</string>
 </resources>
