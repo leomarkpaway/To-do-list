@@ -10,7 +10,8 @@ import com.leomarkpaway.todolist.source.local.entity.Todo
 
 @Database(
     entities = [Todo::class],
-    version = VERSION_NUMBER
+    version = VERSION_NUMBER,
+    exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
     abstract fun todoLisDao(): TodoLisDao
