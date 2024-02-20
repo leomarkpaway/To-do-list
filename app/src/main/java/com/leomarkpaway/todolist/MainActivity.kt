@@ -8,7 +8,7 @@ import com.leomarkpaway.todolist.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<TodoListViewModel, ActivityMainBinding>() {
     override val viewModel: TodoListViewModel by viewModels()
-    override fun inflateBinding() = ActivityMainBinding.inflate(layoutInflater)
+    override val layoutId = R.layout.activity_main
 
     override fun setupViews() {
         setupTodoList()
