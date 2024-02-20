@@ -6,7 +6,7 @@ import com.leomarkpaway.todolist.common.base.BaseDao
 import com.leomarkpaway.todolist.source.local.entity.Todo
 
 @Dao
-interface TodoLisDao: BaseDao<Todo> {
+interface TodoDao: BaseDao<Todo> {
     @Query("SELECT * FROM $TABLE_NAME WHERE id = :id")
     fun getItemById(id: Int): Todo
 

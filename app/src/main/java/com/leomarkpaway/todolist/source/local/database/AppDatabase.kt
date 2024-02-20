@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.leomarkpaway.todolist.common.util.createRoomDataBase
-import com.leomarkpaway.todolist.source.local.dao.TodoLisDao
+import com.leomarkpaway.todolist.source.local.dao.TodoDao
 import com.leomarkpaway.todolist.source.local.database.AppDatabase.Companion.VERSION_NUMBER
 import com.leomarkpaway.todolist.source.local.entity.Todo
 
@@ -14,7 +14,7 @@ import com.leomarkpaway.todolist.source.local.entity.Todo
     exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun todoLisDao(): TodoLisDao
+    abstract fun todoLisDao(): TodoDao
 
     companion object {
         const val VERSION_NUMBER = 1
