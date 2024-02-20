@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leomarkpaway.todolist.databinding.ItemTodoBinding
 import java.util.Locale
-
 
 class TodoAdapter(
     private val itemList: ArrayList<TodoModel>,
@@ -26,7 +26,12 @@ class TodoAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoHolder {
-        val binding = ItemTodoBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = DataBindingUtil.inflate<ItemTodoBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_todo,
+            parent,
+            false
+        )
         return TodoHolder(binding)
     }
 
