@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.leomarkpaway.todolist.common.base.BaseActivity
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
 
-class MainActivity : BaseActivity<TodoListViewModel, ActivityMainBinding>() {
-    override val viewModel: TodoListViewModel by viewModels()
+class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
+    override val viewModel: TodoViewModel by viewModels()
     override val layoutId = R.layout.activity_main
 
     override fun setupViews() {
