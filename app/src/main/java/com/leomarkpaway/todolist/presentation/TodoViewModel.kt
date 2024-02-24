@@ -1,4 +1,4 @@
-package com.leomarkpaway.todolist
+package com.leomarkpaway.todolist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

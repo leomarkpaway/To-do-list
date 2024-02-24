@@ -1,4 +1,4 @@
-package com.leomarkpaway.todolist
+package com.leomarkpaway.todolist.presentation
 
 data class TodoModel(
     val id: Long = 0,

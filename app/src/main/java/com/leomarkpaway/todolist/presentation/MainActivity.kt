@@ -1,8 +1,10 @@
-package com.leomarkpaway.todolist
+package com.leomarkpaway.todolist.presentation
 
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.leomarkpaway.todolist.R
+import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseActivity
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
@@ -16,7 +18,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
 
     override fun setupViews() {
         setupTodoList()
-        viewModel.addTodo(Todo(null,"title1", "description", "8:00 pm"))
+//        viewModel.addTodo(Todo(null,"title1", "description", "8:00 pm"))
     }
 
     override fun subscribe() {

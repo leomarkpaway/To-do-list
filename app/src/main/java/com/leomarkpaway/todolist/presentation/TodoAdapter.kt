@@ -1,4 +1,4 @@
-package com.leomarkpaway.todolist
+package com.leomarkpaway.todolist.presentation
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.databinding.ItemTodoBinding
 import java.util.Locale
 
