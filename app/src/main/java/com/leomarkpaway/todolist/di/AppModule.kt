@@ -3,8 +3,8 @@ package com.leomarkpaway.todolist.di
 import android.content.Context
 import com.leomarkpaway.todolist.data.source.local.dao.TodoDao
 import com.leomarkpaway.todolist.data.source.local.database.AppDatabase
-import com.leomarkpaway.todolist.data.repository.TodoRepository
 import com.leomarkpaway.todolist.data.repository.TodoRepositoryImpl
+import com.leomarkpaway.todolist.domain.TodoRepository
 
 interface AppModule {
     val appDatabase: AppDatabase
