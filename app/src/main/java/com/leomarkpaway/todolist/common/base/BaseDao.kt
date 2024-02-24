@@ -1,5 +1,6 @@
 package com.leomarkpaway.todolist.common.base
 
+import androidx.lifecycle.LiveData
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -8,7 +9,7 @@ import androidx.room.Update
 
 interface BaseDao<T> {
     @Query("SELECT * FROM todo_list")
-    fun getAllData(): List<T>
+    fun getAllData(): LiveData<List<T>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: T): Long

@@ -4,14 +4,19 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leomarkpaway.todolist.common.base.BaseActivity
+import com.leomarkpaway.todolist.common.util.viewModelFactory
+import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
-    override val viewModel: TodoViewModel by viewModels()
+    override val viewModel: TodoViewModel by viewModels {
+        viewModelFactory { TodoViewModel(TodoApp.appModule.todoRepository) }
+    }
     override val layoutId = R.layout.activity_main
 
     override fun setupViews() {
         setupTodoList()
+        viewModel.addTodo(Todo(null,"title1", "description", "8:00 pm"))
     }
 
     override fun subscribe() {
