@@ -3,4 +3,9 @@
     <string name="search">Search</string>
     <string name="today_s_tasks">Today\'s tasks</string>
     <string name="add_todo">add todo</string>
+    <string name="dialog_title">Add Todo</string>
+    <string name="label_title">Title</string>
+    <string name="hint_description">Description here</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_cancel">Cancel</string>
 </resources>
