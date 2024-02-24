@@ -8,18 +8,19 @@ import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leomarkpaway.todolist.R
+import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ItemTodoBinding
 import java.util.Locale
 
 class TodoAdapter(
-    private val itemList: ArrayList<TodoModel>,
-    private val onItemClicked: (TodoModel) -> Unit
+    private val itemList: ArrayList<Todo>,
+    private val onItemClicked: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodoAdapter.TodoHolder>(), Filterable {
 
-    private val itemListHolder = ArrayList<TodoModel>(itemList)
+    private val itemListHolder = ArrayList<Todo>(itemList)
 
     inner class TodoHolder(private val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
-       fun bind(item: TodoModel) = with(binding){
+       fun bind(item: Todo) = with(binding){
            tvTime.text = item.dateTime
            tvTitle.text = item.title.capitalize(Locale.getDefault())
            root.setOnClickListener { onItemClicked(item) }
@@ -48,7 +49,7 @@ class TodoAdapter(
             override fun performFiltering(constraint: CharSequence): FilterResults {
                 val filterPattern =
                     constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
-                val filteredList = mutableListOf<TodoModel>()
+                val filteredList = mutableListOf<Todo>()
                 val results = FilterResults()
                 if (constraint.isEmpty()) {
                     filteredList.addAll(itemListHolder)
@@ -65,7 +66,7 @@ class TodoAdapter(
             override fun publishResults(constraint: CharSequence, results: FilterResults) {
                 itemList.clear()
                 @Suppress("UNCHECKED_CAST")
-                itemList.addAll(results.values as ArrayList<TodoModel>)
+                itemList.addAll(results.values as ArrayList<Todo>)
                 notifyDataSetChanged()
             }
         }
