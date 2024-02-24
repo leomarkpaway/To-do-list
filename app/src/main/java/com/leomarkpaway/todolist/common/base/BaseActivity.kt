@@ -14,11 +14,11 @@ abstract class BaseActivity<T : ViewModel, VB : ViewBinding> : AppCompatActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutId)
-        setupViews()
+        initViews()
         subscribe()
     }
 
-    abstract fun setupViews()
+    abstract fun initViews()
 
     abstract fun subscribe()
 

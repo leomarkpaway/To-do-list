@@ -7,8 +7,8 @@ import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseActivity
 import com.leomarkpaway.todolist.common.util.viewModelFactory
-import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
+import com.leomarkpaway.todolist.presentation.dialog.DialogFragmentAddTodo
 
 class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     override val viewModel: TodoViewModel by viewModels {
@@ -16,12 +16,18 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     }
     override val layoutId = R.layout.activity_main
 
-    override fun setupViews() {
+    override fun initViews() {
         setupTodoList()
-//        viewModel.addTodo(Todo(null,"title1", "description", "8:00 pm"))
+        onClickAddTodo()
     }
 
     override fun subscribe() {
+    }
+
+    private fun onClickAddTodo() = with(binding.faAddTodo) {
+        setOnClickListener {
+            DialogFragmentAddTodo().show(supportFragmentManager, "dialog_add_todo")
+        }
     }
 
     private fun setupTodoList() = with(binding.rvTodo) {
