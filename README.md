@@ -2,7 +2,7 @@
 - MVVM Clean Architecture
 - Live Data
 - Repository Pattern
-- Room DataDase
+- Room Database
 - Data binding
 - Manual Dependency injection
 
