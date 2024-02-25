@@ -36,6 +36,15 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <EditText
+                android:id="@+id/editTextDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Date and Time"
+                android:inputType="none"
+                android:focusable="false"
+                android:onClick="showDateTimePicker" />
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
