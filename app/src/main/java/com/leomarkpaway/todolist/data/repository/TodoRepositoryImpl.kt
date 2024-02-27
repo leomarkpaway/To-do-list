@@ -14,4 +14,8 @@ class TodoRepositoryImpl(private val appDatabase: AppDatabase): TodoRepository {
     override suspend fun getAllTodo(): LiveData<List<Todo>> {
        return appDatabase.todoDao().getAllData()
     }
+
+    override suspend fun deleteTodo(todo: Todo) {
+        appDatabase.todoDao().delete(todo)
+    }
 }

@@ -10,7 +10,7 @@ import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.DialogFragmentAddTodoBinding
 import com.leomarkpaway.todolist.presentation.TodoViewModel
 
-class DialogFragmentAddTodo : BaseDialogFragment<TodoViewModel, DialogFragmentAddTodoBinding>() {
+class AddTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmentAddTodoBinding>() {
     override val viewModel: TodoViewModel by activityViewModels {
         viewModelFactory { TodoViewModel(TodoApp.appModule.todoRepository) }
     }

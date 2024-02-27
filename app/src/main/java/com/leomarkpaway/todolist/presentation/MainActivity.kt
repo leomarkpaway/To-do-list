@@ -10,7 +10,8 @@ import com.leomarkpaway.todolist.common.base.BaseActivity
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
-import com.leomarkpaway.todolist.presentation.dialog.DialogFragmentAddTodo
+import com.leomarkpaway.todolist.presentation.dialog.AddTodoDialogFragment
+import com.leomarkpaway.todolist.presentation.dialog.DeleteTodoDialogFragment
 import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
@@ -29,7 +30,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
 
     private fun onClickAddTodo() = with(binding.faAddTodo) {
         setOnClickListener {
-            DialogFragmentAddTodo().show(supportFragmentManager, "dialog_add_todo")
+            AddTodoDialogFragment().show(supportFragmentManager, "dialog_add_todo")
         }
     }
 
@@ -43,7 +44,18 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     }
 
     private fun setupTodoList(itemList: ArrayList<Todo>) = with(binding.rvTodo) {
-        adapter = TodoAdapter(itemList) { Log.d("qwe", "item $it") }
+        adapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) })
         layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+
+    }
+
+    private fun onCLickItem(item: Todo) {
+
+    }
+
+    private fun onDeleteItem(item: Todo) {
+        Log.d("qwe", "onDeleteItem")
+        DeleteTodoDialogFragment().show(supportFragmentManager, "dialog_delete_todo")
+        viewModel.updateSelectedItem(item)
     }
 }

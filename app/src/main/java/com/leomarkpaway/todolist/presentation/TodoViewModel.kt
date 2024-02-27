@@ -11,9 +11,14 @@ import kotlinx.coroutines.launch
 
 class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
 
-    private val _allTodo = MutableLiveData<List<Todo>>()
-    val allTodo: LiveData<List<Todo>> = _allTodo
+    private val _selectedTodo = MutableLiveData<Todo>()
+    val selectedTodo: LiveData<Todo> = _selectedTodo
 
+    fun updateSelectedItem(todo: Todo) {
+        viewModelScope.launch {
+            _selectedTodo.value = todo
+        }
+    }
     fun addTodo(todo: Todo) {
         viewModelScope.launch(Dispatchers.IO) {
             todoRepository.addTodo(todo)
@@ -21,5 +26,12 @@ class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
     }
 
     suspend fun getAllTodo() = todoRepository.getAllTodo()
+
+    fun deleteTodo() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val selectedTodo = _selectedTodo.value
+            if (selectedTodo != null) todoRepository.deleteTodo(selectedTodo)
+        }
+    }
 
 }
