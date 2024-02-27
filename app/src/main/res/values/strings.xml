@@ -11,4 +11,6 @@
     <string name="selected_item_to_delete">You will not be able to recover this todo! \n Todo: %1$s \n time: %2$s - date:%3$s</string>
     <string name="delete_confirmation">Are you sure?</string>
     <string name="btn_delete">Yes, delete it!</string>
+    <string name="hint_time_and_date">Time and Date</string>
+    <string name="input_holder_time_and_date">%1$s, %2$s - %3$s</string>
 </resources>

@@ -4,7 +4,9 @@ import androidx.fragment.app.activityViewModels
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseDialogFragment
+import com.leomarkpaway.todolist.common.enum.Pattern
 import com.leomarkpaway.todolist.common.uielement.DateTimePicker
+import com.leomarkpaway.todolist.common.util.convertMillis
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.DialogFragmentAddTodoBinding
@@ -29,13 +31,19 @@ class AddTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmentAd
         super.subscribe()
     }
 
-    private fun setupDateTimePicker() {
+    private fun setupDateTimePicker() = with(binding.edtDateTime) {
         dateTimePicker = DateTimePicker.newInstance(requireContext())
-        binding.editTextDate.setOnClickListener { dateTimePicker.showDateTimePicker() }
+        setOnClickListener { dateTimePicker.showDateTimePicker() }
+        val millis = dateTimePicker.getMillis()
+        val dayName = millis.convertMillis(dateTimePicker.getCalendar(), Pattern.DAY_NAME.id)
+        val time = millis.convertMillis(dateTimePicker.getCalendar(), Pattern.TIME.id)
+        val date = millis.convertMillis(dateTimePicker.getCalendar(), Pattern.DATE.id)
+        val formattedTimeDate = getString(R.string.input_holder_time_and_date, dayName,time, date)
+        setText(formattedTimeDate)
     }
 
     private fun onClickSubmit() = with(binding) {
-        val title = tiTitle.editText?.text
+        val title = edtTitle.text
         val description = edtDescription.text
         btnSubmit.setOnClickListener {
             viewModel.addTodo(Todo(null,title.toString(), description.toString(), dateTimePicker.getMillis()))
