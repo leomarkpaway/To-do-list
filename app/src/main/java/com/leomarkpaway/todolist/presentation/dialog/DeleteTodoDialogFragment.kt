@@ -1,6 +1,5 @@
 package com.leomarkpaway.todolist.presentation.dialog
 
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
@@ -21,7 +20,6 @@ class DeleteTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmen
 
     override fun initViews() {
         super.initViews()
-        Log.d("qwe", "oncreate")
         onClickDelete()
         onCLickCancel()
     }
@@ -33,7 +31,6 @@ class DeleteTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmen
 
     private fun observeSelectedItem() {
         viewModel.selectedTodo.observe(this) { item ->
-            Log.d("qwe", "sletd $item")
             if (item != null) setupDialogContent(item)
         }
     }
@@ -46,8 +43,10 @@ class DeleteTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmen
     }
 
     private fun onClickDelete() = with(binding.btnDelete) {
-        setOnClickListener { viewModel.deleteTodo() }
-        dismiss()
+        setOnClickListener {
+            viewModel.deleteTodo()
+            dismiss()
+        }
     }
 
     private fun onCLickCancel() = with(binding.btnCancel) {
