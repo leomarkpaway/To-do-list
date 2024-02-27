@@ -33,7 +33,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_border"
-                    android:focusable="false"
                     android:hint="@string/label_title"
                     android:inputType="text"
                     android:padding="10dp" />
