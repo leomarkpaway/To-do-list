@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="warning">#DF6B51</color>
+    <color name="cancel">#C1C1C1</color>
+    <color name="add_update">#DFBD43</color>
 </resources>

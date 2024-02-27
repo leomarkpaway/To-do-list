@@ -75,6 +75,7 @@
                     android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/add_update"
                     android:text="@string/btn_submit" />
 
                 <com.google.android.material.button.MaterialButton
@@ -82,6 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/cancel"
                     android:text="@string/btn_cancel" />
 
             </LinearLayout>

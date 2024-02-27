@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="#C1C1C1"
+                    android:backgroundTint="@color/cancel"
                     android:text="@string/btn_cancel"
                     android:textColor="@color/white" />
 
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#DF6B51"
+                    android:backgroundTint="@color/warning"
                     android:text="@string/btn_delete"
                     android:textColor="@color/white" />
 
