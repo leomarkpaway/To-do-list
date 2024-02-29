@@ -13,6 +13,10 @@ import com.leomarkpaway.todolist.databinding.ActivityMainBinding
 import com.leomarkpaway.todolist.presentation.dialog.AddTodoDialogFragment
 import com.leomarkpaway.todolist.presentation.dialog.DeleteTodoDialogFragment
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     override val viewModel: TodoViewModel by viewModels {
@@ -38,9 +42,23 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
         lifecycleScope.launch {
             viewModel.getAllTodo().observe(this@MainActivity) { allTodoList ->
                 val allTodoArray = allTodoList as ArrayList<Todo>
-                setupTodoList(allTodoArray)
+                val sortedByTime = sortByTime(allTodoArray)
+                setupTodoList(sortedByTime)
             }
         }
+    }
+
+    private fun sortByTime(modelList: ArrayList<Todo>): ArrayList<Todo> {
+        val timeComparator = Comparator<Todo> { model1, model2 ->
+            val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val calendar1 = Calendar.getInstance()
+            val calendar2 = Calendar.getInstance()
+            calendar1.time = format.parse(model1.time) ?: Date()
+            calendar2.time = format.parse(model2.time) ?: Date()
+            calendar1.compareTo(calendar2)
+        }
+        modelList.sortWith(timeComparator)
+        return modelList
     }
 
     private fun setupTodoList(itemList: ArrayList<Todo>) = with(binding.rvTodo) {

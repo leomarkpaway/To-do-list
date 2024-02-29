@@ -12,7 +12,7 @@ class TodoRepositoryImpl(private val appDatabase: AppDatabase): TodoRepository {
     }
 
     override suspend fun getAllTodo(): LiveData<List<Todo>> {
-       return appDatabase.todoDao().getAllData()
+       return appDatabase.todoDao().getAllDataSortByDate()
     }
 
     override suspend fun deleteTodo(todo: Todo) {

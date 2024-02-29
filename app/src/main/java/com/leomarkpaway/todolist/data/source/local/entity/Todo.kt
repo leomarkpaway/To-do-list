@@ -9,5 +9,6 @@ data class Todo(
     @PrimaryKey(autoGenerate = true) val id: Long? = 0,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String,
-    @ColumnInfo(name = "date_time") val dateTime: Long,
+    @ColumnInfo(name = "time") val time: String,
+    @ColumnInfo(name = "date_millis") val dateMillis: Long,
 )

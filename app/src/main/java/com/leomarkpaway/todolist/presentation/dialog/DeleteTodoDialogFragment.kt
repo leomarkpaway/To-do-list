@@ -37,8 +37,8 @@ class DeleteTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmen
 
     private fun setupDialogContent(todo: Todo) = with(binding.tvSelectedItem) {
         val calendar: Calendar = Calendar.getInstance()
-        val time = todo.dateTime.convertMillis(calendar, Pattern.TIME.id)
-        val date = todo.dateTime.convertMillis(calendar, Pattern.DATE.id)
+        val time = todo.dateMillis.convertMillis(calendar, Pattern.TIME.id)
+        val date = todo.dateMillis.convertMillis(calendar, Pattern.DATE.id)
         text = getString(R.string.selected_item_to_delete, todo.title, time, date)
     }
 

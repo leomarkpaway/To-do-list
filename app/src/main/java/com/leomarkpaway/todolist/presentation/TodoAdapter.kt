@@ -27,7 +27,7 @@ class TodoAdapter(
        @SuppressLint("NotifyDataSetChanged")
        fun bind(item: Todo) = with(binding) {
            val calendar: Calendar = Calendar.getInstance()
-           tvTime.text = item.dateTime.convertMillis(calendar, Pattern.TIME.id)
+           tvTime.text = item.dateMillis.convertMillis(calendar, Pattern.TIME.id)
                .lowercase(Locale.getDefault())
            tvTitle.text = item.title.capitalize(Locale.getDefault())
            root.setOnClickListener { onItemClicked(item) }
