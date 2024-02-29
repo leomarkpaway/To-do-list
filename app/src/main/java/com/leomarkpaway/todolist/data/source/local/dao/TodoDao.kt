@@ -11,7 +11,7 @@ interface TodoDao: BaseDao<Todo> {
     @Query("SELECT * FROM $TABLE_NAME WHERE id = :id")
     fun getItemById(id: Int): Todo
 
-    @Query("SELECT * FROM todo_list ORDER BY date_millis DESC")
+    @Query("SELECT * FROM todo_list ORDER BY date_millis ASC")
     fun getAllDataSortByDate(): LiveData<List<Todo>>
     companion object {
         const val TABLE_NAME = "todo_list"
