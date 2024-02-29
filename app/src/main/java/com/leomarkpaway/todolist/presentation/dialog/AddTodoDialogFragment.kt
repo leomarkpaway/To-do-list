@@ -4,9 +4,7 @@ import androidx.fragment.app.activityViewModels
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseDialogFragment
-import com.leomarkpaway.todolist.common.enum.Pattern
 import com.leomarkpaway.todolist.common.uielement.DateTimePicker
-import com.leomarkpaway.todolist.common.util.convertMillis
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.DialogFragmentAddTodoBinding
@@ -33,13 +31,7 @@ class AddTodoDialogFragment : BaseDialogFragment<TodoViewModel, DialogFragmentAd
 
     private fun setupDateTimePicker() = with(binding.edtDateTime) {
         dateTimePicker = DateTimePicker.newInstance(requireContext())
-        setOnClickListener { dateTimePicker.showDateTimePicker() }
-        val millis = dateTimePicker.getMillis()
-        val dayName = millis.convertMillis(dateTimePicker.getCalendar(), Pattern.DAY_NAME.id)
-        val time = millis.convertMillis(dateTimePicker.getCalendar(), Pattern.TIME.id)
-        val date = millis.convertMillis(dateTimePicker.getCalendar(), Pattern.DATE.id)
-        val formattedTimeDate = getString(R.string.input_holder_time_and_date, dayName,time, date)
-        setText(formattedTimeDate)
+        setOnClickListener { dateTimePicker.showDateTimePicker(it) }
     }
 
     private fun onClickSubmit() = with(binding) {
