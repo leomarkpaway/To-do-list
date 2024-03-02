@@ -7,4 +7,5 @@ interface TodoRepository {
     suspend fun addTodo(todo: Todo)
     suspend fun getAllTodo() : LiveData<List<Todo>>
     suspend fun deleteTodo(todo: Todo)
+    suspend fun updateTodo(todo: Todo)
 }

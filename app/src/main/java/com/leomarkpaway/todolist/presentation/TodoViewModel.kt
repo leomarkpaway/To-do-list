@@ -1,5 +1,6 @@
 package com.leomarkpaway.todolist.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,7 +31,15 @@ class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
     fun deleteTodo() {
         viewModelScope.launch(Dispatchers.IO) {
             val selectedTodo = _selectedTodo.value
+            Log.d("qwe", "selectedTodo $selectedTodo")
             if (selectedTodo != null) todoRepository.deleteTodo(selectedTodo)
+        }
+    }
+
+    fun updateTodo(todo: Todo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val todoCopy = todo.copy(id = _selectedTodo.value?.id)
+            todoRepository.updateTodo(todoCopy)
         }
     }
 

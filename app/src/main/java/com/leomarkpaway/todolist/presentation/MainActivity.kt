@@ -1,16 +1,16 @@
 package com.leomarkpaway.todolist.presentation
 
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseActivity
+import com.leomarkpaway.todolist.common.enum.Pattern.TIME
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
-import com.leomarkpaway.todolist.presentation.dialog.AddTodoDialogFragment
+import com.leomarkpaway.todolist.presentation.dialog.AddUpdateTodoDialogFragment
 import com.leomarkpaway.todolist.presentation.dialog.DeleteTodoDialogFragment
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -34,7 +34,8 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
 
     private fun onClickAddTodo() = with(binding.faAddTodo) {
         setOnClickListener {
-            AddTodoDialogFragment().show(supportFragmentManager, "dialog_add_todo")
+            AddUpdateTodoDialogFragment.newInstance(context = context, isAddTodo = true)
+                .show(supportFragmentManager, "dialog_add_todo")
         }
     }
 
@@ -50,7 +51,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
 
     private fun sortByTime(modelList: ArrayList<Todo>): ArrayList<Todo> {
         val timeComparator = Comparator<Todo> { model1, model2 ->
-            val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val format = SimpleDateFormat(TIME.id, Locale.getDefault())
             val calendar1 = Calendar.getInstance()
             val calendar2 = Calendar.getInstance()
             calendar1.time = format.parse(model1.time) ?: Date()
@@ -62,7 +63,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     }
 
     private fun setupTodoList(itemList: ArrayList<Todo>) = with(binding.rvTodo) {
-        adapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) })
+        adapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) })
         layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
     }
@@ -72,8 +73,13 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     }
 
     private fun onDeleteItem(item: Todo) {
-        Log.d("qwe", "onDeleteItem")
         DeleteTodoDialogFragment().show(supportFragmentManager, "dialog_delete_todo")
         viewModel.updateSelectedItem(item)
+    }
+
+    private fun onUpdateItem(todo: Todo) {
+        AddUpdateTodoDialogFragment.newInstance(context = this , isAddTodo = false)
+            .show(supportFragmentManager, "dialog_delete_todo")
+        viewModel.updateSelectedItem(todo)
     }
 }

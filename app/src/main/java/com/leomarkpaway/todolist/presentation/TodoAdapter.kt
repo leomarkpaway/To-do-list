@@ -18,7 +18,8 @@ import java.util.Locale
 class TodoAdapter(
     private val itemList: ArrayList<Todo>,
     private val onItemClicked: (Todo) -> Unit,
-    private val onItemDelete: (Todo) -> Unit
+    private val onItemDelete: (Todo) -> Unit,
+    private val onItemUpdate: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodoAdapter.TodoHolder>(), Filterable {
 
     private val itemListHolder = ArrayList<Todo>(itemList)
@@ -27,12 +28,17 @@ class TodoAdapter(
        @SuppressLint("NotifyDataSetChanged")
        fun bind(item: Todo) = with(binding) {
            val calendar: Calendar = Calendar.getInstance()
-           tvTime.text = item.dateMillis.convertMillis(calendar, Pattern.TIME.id)
+           tvTime.text = "${item.dateMillis.convertMillis(calendar, Pattern.TIME.id)} - ${item.dateMillis.convertMillis(calendar, Pattern.DATE.id)
+               .lowercase(Locale.getDefault())}"
                .lowercase(Locale.getDefault())
            tvTitle.text = item.title.capitalize(Locale.getDefault())
            root.setOnClickListener { onItemClicked(item) }
            imgDelete.setOnClickListener {
                onItemDelete(item)
+               notifyDataSetChanged()
+           }
+           imgEdit.setOnClickListener {
+               if (item.id != null) onItemUpdate(item)
                notifyDataSetChanged()
            }
        }

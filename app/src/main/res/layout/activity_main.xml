@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
-            android:backgroundTint="@color/add_update"
+            android:backgroundTint="@color/light_yellow"
             android:contentDescription="@string/add_todo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -18,4 +18,8 @@ class TodoRepositoryImpl(private val appDatabase: AppDatabase): TodoRepository {
     override suspend fun deleteTodo(todo: Todo) {
         appDatabase.todoDao().delete(todo)
     }
+
+    override suspend fun updateTodo(todo: Todo) {
+        appDatabase.todoDao().update(todo)
+    }
 }

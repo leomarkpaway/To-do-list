@@ -3,10 +3,12 @@
     <string name="search">Search</string>
     <string name="today_s_tasks">Today\'s tasks</string>
     <string name="add_todo">add todo</string>
-    <string name="dialog_title">Add Todo</string>
+    <string name="dialog_title_add_todo">Add Todo</string>
+    <string name="dialog_title_update_todo">Update Todo</string>
     <string name="label_title">Title</string>
     <string name="hint_description">Description here</string>
     <string name="btn_submit">Submit</string>
+    <string name="btn_update">update</string>
     <string name="btn_cancel">Cancel</string>
     <string name="selected_item_to_delete">You will not be able to recover this todo! \n Todo: %1$s \n time: %2$s - date:%3$s</string>
     <string name="delete_confirmation">Are you sure?</string>
