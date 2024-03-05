@@ -29,14 +29,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp">
 
-                <EditText
-                    android:id="@+id/edt_title"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ipl_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_border"
+                    app:helperTextTextColor="@color/alert"
                     android:hint="@string/label_title"
-                    android:inputType="text"
-                    android:padding="10dp" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -44,16 +51,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp">
 
-                <EditText
-                    android:id="@+id/edt_date_time"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ipl_date_time"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_border"
-                    android:focusable="false"
+                    app:helperTextTextColor="@color/alert"
                     android:hint="@string/hint_time_and_date"
-                    android:inputType="datetime"
-                    android:onClick="showDateTimePicker"
-                    android:padding="10dp" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_date_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="datetime"
+                        android:onClick="showDateTimePicker"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <ScrollView

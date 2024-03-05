@@ -6,4 +6,5 @@
     <color name="cancel">#C1C1C1</color>
     <color name="light_yellow">#FFD645</color>
     <color name="dark_cyan">#0da678</color>
+    <color name="alert">#FF0000</color>
 </resources>

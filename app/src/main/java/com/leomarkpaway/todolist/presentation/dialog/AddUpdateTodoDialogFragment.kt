@@ -2,6 +2,7 @@ package com.leomarkpaway.todolist.presentation.dialog
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.leomarkpaway.todolist.R
@@ -12,6 +13,7 @@ import com.leomarkpaway.todolist.common.enum.Pattern.DATE
 import com.leomarkpaway.todolist.common.enum.Pattern.DAY_NAME
 import com.leomarkpaway.todolist.common.enum.Pattern.TIME
 import com.leomarkpaway.todolist.common.uielement.DateTimePicker
+import com.leomarkpaway.todolist.common.util.InputValidator
 import com.leomarkpaway.todolist.common.util.convertMillis
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
@@ -25,6 +27,7 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     }
     override val layout: Int = R.layout.dialog_fragment_add_todo
 
+    private lateinit var title: InputValidator
     private lateinit var dateTimePicker: DateTimePicker
     private var id: Long? = null
 
@@ -69,20 +72,32 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     }
 
     private fun setupSubmit() = with(binding) {
+        title = InputValidator(getString(R.string.input_required), iplTitle,).apply { setListener(edtDateTime) }
         btnSubmit.text = if (args!!.getBoolean(ADD_TODO.id)) getText(R.string.btn_submit) else getText(R.string.btn_update)
         val buttonColor = if (args!!.getBoolean(ADD_TODO.id)) ContextCompat.getColor(requireContext(), R.color.light_yellow) else ContextCompat.getColor(requireContext(), R.color.dark_cyan)
         btnSubmit.background.setTint(buttonColor)
 
         btnSubmit.setOnClickListener {
-            val title = edtTitle.text
-            val description = edtDescription.text
-            val time = dateTimePicker.getConvertedMillis(TIME.id)
 
-            if (args!!.getBoolean(ADD_TODO.id)) {
-                viewModel.addTodo(Todo(null,title.toString(), description.toString(), time, dateTimePicker.getMillis()))
+
+        }
+    }
+
+    private fun validateAndCreateTodo() {
+        val description = binding.edtDescription.text
+        val time = dateTimePicker.getConvertedMillis(TIME.id)
+        val dateMillis = dateTimePicker.getMillis()
+
+        if (args!!.getBoolean(ADD_TODO.id)) {
+            if (title.isValid()) { viewModel.addTodo(Todo(null, title.getStringValue(), description.toString(), time, dateMillis))
+                dismiss()
             } else {
-                viewModel.updateTodo(Todo(null,title.toString(), description.toString(), time, dateTimePicker.getMillis()))
+                binding.iplTitle.helperText = getString(R.string.input_required)
+                // TODO show toast for invalid input
+                Log.d("qwe", "show toast")
             }
+        } else {
+            viewModel.updateTodo(Todo(null, title.toString(), description.toString(), time, dateMillis))
             dismiss()
         }
     }

@@ -6,7 +6,7 @@
     <string name="dialog_title_add_todo">Add Todo</string>
     <string name="dialog_title_update_todo">Update Todo</string>
     <string name="label_title">Title</string>
-    <string name="hint_description">Description here</string>
+    <string name="hint_description">Description here ( optional )</string>
     <string name="btn_submit">Submit</string>
     <string name="btn_update">update</string>
     <string name="btn_cancel">Cancel</string>
@@ -15,4 +15,5 @@
     <string name="btn_delete">Yes, delete it!</string>
     <string name="hint_time_and_date">Time and Date</string>
     <string name="input_holder_time_and_date">%1$s, %2$s - %3$s</string>
+    <string name="input_required">Input Required!</string>
 </resources>
