@@ -15,6 +15,9 @@ class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
     private val _selectedTodo = MutableLiveData<Todo>()
     val selectedTodo: LiveData<Todo> = _selectedTodo
 
+    private val _isDisableDatePicker = MutableLiveData<Boolean>()
+    val isDisableDatePicker: LiveData<Boolean> = _isDisableDatePicker
+
     fun updateSelectedItem(todo: Todo) {
         viewModelScope.launch {
             _selectedTodo.value = todo
@@ -40,6 +43,12 @@ class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val todoCopy = todo.copy(id = _selectedTodo.value?.id)
             todoRepository.updateTodo(todoCopy)
+        }
+    }
+
+    fun updateIsDisableDatePicker(isDisable: Boolean) {
+        viewModelScope.launch(Dispatchers.Unconfined) {
+            _isDisableDatePicker.value = isDisable
         }
     }
 

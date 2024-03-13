@@ -3,6 +3,7 @@
     <string name="search">Search</string>
     <string name="today_s_tasks">Today\'s tasks</string>
     <string name="add_todo">add todo</string>
+    <string name="dialog_title_view_todo">Todo Details</string>
     <string name="dialog_title_add_todo">Add Todo</string>
     <string name="dialog_title_update_todo">Update Todo</string>
     <string name="label_title">Title</string>
@@ -16,4 +17,7 @@
     <string name="hint_time_and_date">Time and Date</string>
     <string name="input_holder_time_and_date">%1$s, %2$s - %3$s</string>
     <string name="input_required">Input Required!</string>
+    <string name="no_description">No Description</string>
+    <string name="close">Close</string>
+    <string name="label_description">Description:</string>
 </resources>

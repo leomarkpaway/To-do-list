@@ -2,13 +2,15 @@ package com.leomarkpaway.todolist.presentation.dialog
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseDialogFragment
 import com.leomarkpaway.todolist.common.enum.ArgKey.ADD_TODO
+import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
+import com.leomarkpaway.todolist.common.enum.ArgKey.UPDATE_TODO
 import com.leomarkpaway.todolist.common.enum.Pattern.DATE
 import com.leomarkpaway.todolist.common.enum.Pattern.DAY_NAME
 import com.leomarkpaway.todolist.common.enum.Pattern.TIME
@@ -21,7 +23,7 @@ import com.leomarkpaway.todolist.databinding.DialogFragmentAddTodoBinding
 import com.leomarkpaway.todolist.presentation.TodoViewModel
 import java.util.Calendar
 
-class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFragment<TodoViewModel, DialogFragmentAddTodoBinding>() {
+class ViewAddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFragment<TodoViewModel, DialogFragmentAddTodoBinding>() {
     override val viewModel: TodoViewModel by activityViewModels {
         viewModelFactory { TodoViewModel(TodoApp.appModule.todoRepository) }
     }
@@ -31,21 +33,27 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     private lateinit var timeDate: InputValidator
     private lateinit var dateTimePicker: DateTimePicker
     private var selectedItem = Todo(null, "", "", "", 0)
+    private var disableDatePicker = true
 
     override fun initViews() {
         super.initViews()
-        setupDialogTitle()
+        setupDialogFunction()
         setupDateTimePicker()
         setupSubmit()
         setupCancel()
     }
 
+
+
     override fun subscribe() {
         super.subscribe()
         viewModel.selectedTodo.observe(this) { item ->
             selectedItem = item
-            if (item != null && !args!!.getBoolean(ADD_TODO.id))
+            if (item != null && args!!.getBoolean(VIEW_TODO.id) || args!!.getBoolean(UPDATE_TODO.id))
                 setupDialogContent(item)
+        }
+        viewModel.isDisableDatePicker.observe(this) { isDisableDatePicker ->
+            disableDatePicker = isDisableDatePicker
         }
     }
 
@@ -61,24 +69,45 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
         edtDescription.setText(item.description)
     }
 
-    private fun setupDialogTitle() {
-        binding.tvTitle.text = if (args!!.getBoolean(ADD_TODO.id))
-            context.getString(R.string.dialog_title_add_todo)
-        else context.getString(R.string.dialog_title_update_todo)
+    private fun setupDialogFunction() = with(binding) {
+
+        if (args!!.getBoolean(VIEW_TODO.id)) {
+            tvTitle.text = getString(R.string.dialog_title_view_todo)
+            btnSubmit.visibility = View.GONE
+            edtTitle.isFocusable = false
+            edtDescription.isFocusable = false
+            tvLabelDescription.visibility = View.VISIBLE
+            viewModel.updateIsDisableDatePicker(true)
+
+            val hintDescription = edtDescription.hint
+            val hintDescriptionString = context.getString(R.string.hint_description)
+            if (hintDescription == hintDescriptionString) edtDescription.hint = getString(R.string.no_description)
+            btnCancel.text = getString(R.string.close)
+            btnCancel.background.setTint(ContextCompat.getColor(requireContext(), R.color.alert))
+        }
+
+        if (args!!.getBoolean(ADD_TODO.id)) {
+            tvTitle.text = getString(R.string.dialog_title_add_todo)
+            btnSubmit.text = getText(R.string.btn_submit)
+            viewModel.updateIsDisableDatePicker(false)
+        }
+
+        if (args!!.getBoolean(UPDATE_TODO.id)) {
+            tvTitle.text = getString(R.string.dialog_title_update_todo)
+            btnSubmit.text = getText(R.string.btn_update)
+            btnSubmit.background.setTint(ContextCompat.getColor(requireContext(), R.color.dark_cyan))
+            viewModel.updateIsDisableDatePicker(false)
+        }
     }
 
     private fun setupDateTimePicker() = with(binding.edtDateTime) {
         dateTimePicker = DateTimePicker.newInstance(requireContext())
-        setOnClickListener { dateTimePicker.showDateTimePicker(it) }
+        setOnClickListener { if (!disableDatePicker) dateTimePicker.showDateTimePicker(it) }
     }
 
     private fun setupSubmit() = with(binding) {
         title = InputValidator(getString(R.string.input_required), iplTitle,).apply { setListener(edtTitle) }
         timeDate = InputValidator(getString(R.string.input_required), iplDateTime,).apply { setListener(edtDateTime) }
-
-        btnSubmit.text = if (args!!.getBoolean(ADD_TODO.id)) getText(R.string.btn_submit) else getText(R.string.btn_update)
-        val buttonColor = if (args!!.getBoolean(ADD_TODO.id)) ContextCompat.getColor(requireContext(), R.color.light_yellow) else ContextCompat.getColor(requireContext(), R.color.dark_cyan)
-        btnSubmit.background.setTint(buttonColor)
 
         btnSubmit.setOnClickListener {
             val isFormValid = title.isValid() && timeDate.isValid()
@@ -98,6 +127,10 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
                 }
             }
         }
+    }
+
+    private fun setupCancel() = with(binding) {
+        btnCancel.setOnClickListener { dismiss() }
     }
 
     private fun createTodo() : Todo {
@@ -122,15 +155,15 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
         return Todo(null, title.getStringValue(), description, time, dateMillis)
     }
 
-    private fun setupCancel() = with(binding) {
-        btnCancel.setOnClickListener { dismiss() }
-    }
-
     companion object {
-        fun newInstance(context: Context, isAddTodo: Boolean) : AddUpdateTodoDialogFragment {
-            val fragment = AddUpdateTodoDialogFragment(context)
+        fun newInstance(context: Context, methodId: String) : ViewAddUpdateTodoDialogFragment {
+            val fragment = ViewAddUpdateTodoDialogFragment(context)
             val args = Bundle()
-            args.putBoolean(ADD_TODO.id, isAddTodo)
+            when(methodId) {
+                ADD_TODO.id -> { args.putBoolean(ADD_TODO.id, true) }
+                VIEW_TODO.id -> { args.putBoolean(VIEW_TODO.id, true) }
+                UPDATE_TODO.id -> { args.putBoolean(UPDATE_TODO.id, true) }
+            }
             fragment.arguments = args
             return fragment
         }

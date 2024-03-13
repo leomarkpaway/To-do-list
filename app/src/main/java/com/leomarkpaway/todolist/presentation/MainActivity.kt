@@ -7,10 +7,13 @@ import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseActivity
 import com.leomarkpaway.todolist.common.enum.Pattern.TIME
+import com.leomarkpaway.todolist.common.enum.ArgKey.ADD_TODO
+import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
+import com.leomarkpaway.todolist.common.enum.ArgKey.UPDATE_TODO
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
-import com.leomarkpaway.todolist.presentation.dialog.AddUpdateTodoDialogFragment
+import com.leomarkpaway.todolist.presentation.dialog.ViewAddUpdateTodoDialogFragment
 import com.leomarkpaway.todolist.presentation.dialog.DeleteTodoDialogFragment
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -30,13 +33,6 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
 
     override fun subscribe() {
         observeAllTodo()
-    }
-
-    private fun onClickAddTodo() = with(binding.faAddTodo) {
-        setOnClickListener {
-            AddUpdateTodoDialogFragment.newInstance(context = context, isAddTodo = true)
-                .show(supportFragmentManager, "dialog_add_todo")
-        }
     }
 
     private fun observeAllTodo() {
@@ -68,17 +64,26 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
 
     }
 
-    private fun onCLickItem(item: Todo) {
-
+    private fun onClickAddTodo() = with(binding.faAddTodo) {
+        setOnClickListener {
+            ViewAddUpdateTodoDialogFragment.newInstance(context = context, methodId = ADD_TODO.id)
+                .show(supportFragmentManager, "dialog_add_todo")
+        }
     }
 
-    private fun onDeleteItem(item: Todo) {
+    private fun onCLickItem(todo: Todo) {
+        ViewAddUpdateTodoDialogFragment.newInstance(context = this, methodId = VIEW_TODO.id)
+            .show(supportFragmentManager, "dialog_View_detail_todo")
+        viewModel.updateSelectedItem(todo)
+    }
+
+    private fun onDeleteItem(todo: Todo) {
         DeleteTodoDialogFragment().show(supportFragmentManager, "dialog_delete_todo")
-        viewModel.updateSelectedItem(item)
+        viewModel.updateSelectedItem(todo)
     }
 
     private fun onUpdateItem(todo: Todo) {
-        AddUpdateTodoDialogFragment.newInstance(context = this , isAddTodo = false)
+        ViewAddUpdateTodoDialogFragment.newInstance(context = this ,methodId = UPDATE_TODO.id)
             .show(supportFragmentManager, "dialog_delete_todo")
         viewModel.updateSelectedItem(todo)
     }
