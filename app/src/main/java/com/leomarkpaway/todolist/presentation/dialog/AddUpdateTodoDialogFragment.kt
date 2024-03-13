@@ -28,8 +28,9 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     override val layout: Int = R.layout.dialog_fragment_add_todo
 
     private lateinit var title: InputValidator
+    private lateinit var timeDate: InputValidator
     private lateinit var dateTimePicker: DateTimePicker
-    private var id: Long? = null
+    private lateinit var selectedItem: Todo
 
     override fun initViews() {
         super.initViews()
@@ -42,7 +43,7 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     override fun subscribe() {
         super.subscribe()
         viewModel.selectedTodo.observe(this) { item ->
-            id = item.id
+            selectedItem = item
             if (item != null && !args!!.getBoolean(ADD_TODO.id))
                 setupDialogContent(item)
         }
@@ -72,34 +73,53 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     }
 
     private fun setupSubmit() = with(binding) {
-        title = InputValidator(getString(R.string.input_required), iplTitle,).apply { setListener(edtDateTime) }
+        title = InputValidator(getString(R.string.input_required), iplTitle,).apply { setListener(edtTitle) }
+        timeDate = InputValidator(getString(R.string.input_required), iplDateTime,).apply { setListener(edtDateTime) }
+
         btnSubmit.text = if (args!!.getBoolean(ADD_TODO.id)) getText(R.string.btn_submit) else getText(R.string.btn_update)
         val buttonColor = if (args!!.getBoolean(ADD_TODO.id)) ContextCompat.getColor(requireContext(), R.color.light_yellow) else ContextCompat.getColor(requireContext(), R.color.dark_cyan)
         btnSubmit.background.setTint(buttonColor)
 
         btnSubmit.setOnClickListener {
+            val isFormValid = title.isValid() && timeDate.isValid()
+            binding.iplTitle.helperText = if (title.isValid()) null else getString(R.string.input_required)
+            binding.iplDateTime.helperText = if (timeDate.isValid()) null else getString(R.string.input_required)
 
-
+            val todo = createTodo()
+            if (args!!.getBoolean(ADD_TODO.id)) {
+                if (isFormValid) {
+                    viewModel.addTodo(todo)
+                    dismiss()
+                }
+            } else {
+                if (isFormValid) {
+                    viewModel.updateTodo(todo)
+                    dismiss()
+                }
+            }
         }
     }
 
-    private fun validateAndCreateTodo() {
-        val description = binding.edtDescription.text
-        val time = dateTimePicker.getConvertedMillis(TIME.id)
-        val dateMillis = dateTimePicker.getMillis()
+    private fun createTodo() : Todo {
+        val currentTimeDateString = binding.edtDateTime.text.toString()
+        val oldDateMillis = selectedItem.dateMillis
+        val oldDayName = oldDateMillis.convertMillis(dateTimePicker.getCalendar(), DAY_NAME.id)
+        val oldTime = selectedItem.time
+        val oldDate = oldDateMillis.convertMillis(dateTimePicker.getCalendar(), DATE.id)
+        val oldTimeDateString = context.getString(R.string.input_holder_time_and_date, oldDayName,oldTime, oldDate)
 
-        if (args!!.getBoolean(ADD_TODO.id)) {
-            if (title.isValid()) { viewModel.addTodo(Todo(null, title.getStringValue(), description.toString(), time, dateMillis))
-                dismiss()
-            } else {
-                binding.iplTitle.helperText = getString(R.string.input_required)
-                // TODO show toast for invalid input
-                Log.d("qwe", "show toast")
-            }
+        val time: String
+        val dateMillis: Long
+        val description = binding.edtDescription.text.toString()
+        if (oldTimeDateString == currentTimeDateString) {
+            time = selectedItem.time
+            dateMillis = oldDateMillis
         } else {
-            viewModel.updateTodo(Todo(null, title.toString(), description.toString(), time, dateMillis))
-            dismiss()
+            time = dateTimePicker.getConvertedMillis(TIME.id)
+            dateMillis = dateTimePicker.getMillis()
         }
+
+        return Todo(null, title.getStringValue(), description, time, dateMillis)
     }
 
     private fun setupCancel() = with(binding) {

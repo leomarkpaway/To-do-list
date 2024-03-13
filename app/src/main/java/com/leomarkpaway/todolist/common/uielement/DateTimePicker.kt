@@ -44,7 +44,7 @@ class DateTimePicker(private val context: Context) {
                     },
                     hour,
                     minute,
-                    true
+                    false
                 )
 
                 timePickerDialog.show()
