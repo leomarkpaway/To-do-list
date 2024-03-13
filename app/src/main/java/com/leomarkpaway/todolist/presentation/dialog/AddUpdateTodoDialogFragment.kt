@@ -30,7 +30,7 @@ class AddUpdateTodoDialogFragment(private val context: Context) : BaseDialogFrag
     private lateinit var title: InputValidator
     private lateinit var timeDate: InputValidator
     private lateinit var dateTimePicker: DateTimePicker
-    private lateinit var selectedItem: Todo
+    private var selectedItem = Todo(null, "", "", "", 0)
 
     override fun initViews() {
         super.initViews()
