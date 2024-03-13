@@ -11,4 +11,5 @@ data class Todo(
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "time") val time: String,
     @ColumnInfo(name = "date_millis") val dateMillis: Long,
+    @ColumnInfo(name = "status") val status: Boolean? = false,
 )

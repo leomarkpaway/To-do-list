@@ -59,7 +59,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     }
 
     private fun setupTodoList(itemList: ArrayList<Todo>) = with(binding.rvTodo) {
-        adapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) })
+        adapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) }, { onMarkAsDone(it) })
         layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
     }
@@ -87,4 +87,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
             .show(supportFragmentManager, "dialog_delete_todo")
         viewModel.updateSelectedItem(todo)
     }
+
+    private fun onMarkAsDone(todo: Todo) { viewModel.updateMarkAsDone(todo) }
+
 }

@@ -46,6 +46,13 @@ class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
         }
     }
 
+    fun updateMarkAsDone(todo: Todo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val todoCopy = if (todo.status == false) todo.copy(status = true) else todo.copy(status = false)
+            todoRepository.updateTodo(todoCopy)
+        }
+    }
+
     fun updateIsDisableDatePicker(isDisable: Boolean) {
         viewModelScope.launch(Dispatchers.Unconfined) {
             _isDisableDatePicker.value = isDisable

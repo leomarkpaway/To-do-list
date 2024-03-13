@@ -1,10 +1,13 @@
 package com.leomarkpaway.todolist.presentation
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leomarkpaway.todolist.R
@@ -15,14 +18,17 @@ import com.leomarkpaway.todolist.databinding.ItemTodoBinding
 import java.util.Calendar
 import java.util.Locale
 
+
 class TodoAdapter(
     private val itemList: ArrayList<Todo>,
     private val onItemClicked: (Todo) -> Unit,
     private val onItemDelete: (Todo) -> Unit,
-    private val onItemUpdate: (Todo) -> Unit
+    private val onItemUpdate: (Todo) -> Unit,
+    private val onClickDone: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodoAdapter.TodoHolder>(), Filterable {
 
     private val itemListHolder = ArrayList<Todo>(itemList)
+    private lateinit var context: Context
 
     inner class TodoHolder(private val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
        @SuppressLint("NotifyDataSetChanged")
@@ -41,10 +47,27 @@ class TodoAdapter(
                if (item.id != null) onItemUpdate(item)
                notifyDataSetChanged()
            }
+           checkBox.setOnClickListener {
+               onClickDone(item)
+               checkBox.isChecked = true
+               notifyDataSetChanged()
+           }
+
+           if (item.status == false) {
+               checkBox.isChecked = false
+           } else {
+               tvTitle.paintFlags = tvTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+               imgEdit.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit_disable))
+               imgDelete.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_delete_disable))
+               checkBox.isChecked = true
+               imgEdit.isClickable = false
+               imgDelete.isClickable = false
+           }
        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoHolder {
+        context = parent.context
         val binding = DataBindingUtil.inflate<ItemTodoBinding>(
             LayoutInflater.from(parent.context),
             R.layout.item_todo,
