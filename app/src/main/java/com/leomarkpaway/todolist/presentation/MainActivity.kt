@@ -84,6 +84,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
             visibility = View.GONE
         }
         layoutManager = GridLayoutManager(this@MainActivity, 7)
+        isLayoutFrozen = true
     }
 
     private fun setupSearchBar() = with(binding.searchBar) {
