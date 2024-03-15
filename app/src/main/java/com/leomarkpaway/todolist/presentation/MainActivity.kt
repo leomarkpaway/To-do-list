@@ -14,7 +14,10 @@ import com.leomarkpaway.todolist.common.base.BaseActivity
 import com.leomarkpaway.todolist.common.enum.ArgKey.ADD_TODO
 import com.leomarkpaway.todolist.common.enum.ArgKey.UPDATE_TODO
 import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
+import com.leomarkpaway.todolist.common.enum.Pattern
 import com.leomarkpaway.todolist.common.enum.Pattern.TIME
+import com.leomarkpaway.todolist.common.util.convertMillis
+import com.leomarkpaway.todolist.common.util.getCurrentDate
 import com.leomarkpaway.todolist.common.util.getCurrentWeek
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
@@ -49,9 +52,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     private fun observeAllTodo() {
         lifecycleScope.launch {
             viewModel.getAllTodo().observe(this@MainActivity) { allTodoList ->
-                val allTodoArray = allTodoList as ArrayList<Todo>
-                val sortedByTime = sortByTime(allTodoArray)
-                setupTodoList(sortedByTime)
+                setupTodayTaskList(allTodoList)
             }
         }
     }
@@ -69,8 +70,17 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
         return modelList
     }
 
-    private fun setupTodoList(itemList: ArrayList<Todo>) = with(binding.rvTodo) {
-        todoAdapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) }, { onMarkAsDone(it) })
+    private fun setupTodayTaskList(itemList: List<Todo>) = with(binding.rvTodo) {
+        val calendar: Calendar = Calendar.getInstance()
+        val filterByCurrentDate = itemList.filter {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.dateMillis.convertMillis(calendar, Pattern.DATE.id) == getCurrentDate()
+            } else { TODO("VERSION.SDK_INT < O") }
+        }
+        val allTodoArray = filterByCurrentDate as ArrayList<Todo>
+        val sortedByTime = sortByTime(allTodoArray)
+
+        todoAdapter = TodoAdapter(sortedByTime, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) }, { onMarkAsDone(it) })
         adapter = todoAdapter
         layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
