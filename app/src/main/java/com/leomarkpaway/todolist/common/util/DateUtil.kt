@@ -39,3 +39,10 @@ fun String.toShortDayName(): String {
     }
     return shortDayName
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun getCurrentDate() : String {
+    val currentDate = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern(Pattern.DATE.id)
+    return currentDate.format(formatter)
+}

@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
@@ -82,7 +83,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
         } else {
             visibility = View.GONE
         }
-        layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = GridLayoutManager(this@MainActivity, 7)
     }
 
     private fun setupSearchBar() = with(binding.searchBar) {
