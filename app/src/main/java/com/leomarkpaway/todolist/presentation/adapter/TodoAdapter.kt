@@ -1,4 +1,4 @@
-package com.leomarkpaway.todolist.presentation
+package com.leomarkpaway.todolist.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context

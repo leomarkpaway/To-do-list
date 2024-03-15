@@ -1,7 +1,9 @@
 package com.leomarkpaway.todolist.presentation
 
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,9 +14,12 @@ import com.leomarkpaway.todolist.common.enum.ArgKey.ADD_TODO
 import com.leomarkpaway.todolist.common.enum.ArgKey.UPDATE_TODO
 import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
 import com.leomarkpaway.todolist.common.enum.Pattern.TIME
+import com.leomarkpaway.todolist.common.util.getCurrentWeek
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
+import com.leomarkpaway.todolist.presentation.adapter.CurrentWeekAdapter
+import com.leomarkpaway.todolist.presentation.adapter.TodoAdapter
 import com.leomarkpaway.todolist.presentation.dialog.DeleteTodoDialogFragment
 import com.leomarkpaway.todolist.presentation.dialog.ViewAddUpdateTodoDialogFragment
 import kotlinx.coroutines.launch
@@ -31,6 +36,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     private lateinit var todoAdapter: TodoAdapter
 
     override fun initViews() {
+        setupCurrentWeek()
         setupSearchBar()
         onClickAddTodo()
     }
@@ -67,6 +73,16 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
         adapter = todoAdapter
         layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
+    }
+
+    private fun setupCurrentWeek() = with(binding.rvWeek) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val week = getCurrentWeek()
+            adapter = CurrentWeekAdapter(week)
+        } else {
+            visibility = View.GONE
+        }
+        layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun setupSearchBar() = with(binding.searchBar) {
