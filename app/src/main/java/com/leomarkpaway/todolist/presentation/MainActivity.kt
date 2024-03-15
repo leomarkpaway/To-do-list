@@ -2,7 +2,6 @@ package com.leomarkpaway.todolist.presentation
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,10 +73,7 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
         addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                todoAdapter.filter.filter(s.toString())
-                Toast.makeText(this@MainActivity, "afterTextChanged: $s", Toast.LENGTH_SHORT).show()
-            }
+            override fun afterTextChanged(s: Editable?) { todoAdapter.filter.filter(s.toString()) }
         })
     }
 
