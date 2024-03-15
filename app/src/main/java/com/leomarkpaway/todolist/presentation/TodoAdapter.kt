@@ -78,7 +78,7 @@ class TodoAdapter(
     }
 
     override fun onBindViewHolder(holder: TodoHolder, position: Int) {
-        val item = itemListHolder[position]
+        val item = itemList[position]
         holder.bind(item)
     }
 

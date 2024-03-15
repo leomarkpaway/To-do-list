@@ -1,20 +1,23 @@
 package com.leomarkpaway.todolist.presentation
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseActivity
-import com.leomarkpaway.todolist.common.enum.Pattern.TIME
 import com.leomarkpaway.todolist.common.enum.ArgKey.ADD_TODO
-import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
 import com.leomarkpaway.todolist.common.enum.ArgKey.UPDATE_TODO
+import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
+import com.leomarkpaway.todolist.common.enum.Pattern.TIME
 import com.leomarkpaway.todolist.common.util.viewModelFactory
 import com.leomarkpaway.todolist.data.source.local.entity.Todo
 import com.leomarkpaway.todolist.databinding.ActivityMainBinding
-import com.leomarkpaway.todolist.presentation.dialog.ViewAddUpdateTodoDialogFragment
 import com.leomarkpaway.todolist.presentation.dialog.DeleteTodoDialogFragment
+import com.leomarkpaway.todolist.presentation.dialog.ViewAddUpdateTodoDialogFragment
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -26,8 +29,10 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
         viewModelFactory { TodoViewModel(TodoApp.appModule.todoRepository) }
     }
     override val layoutId = R.layout.activity_main
+    private lateinit var todoAdapter: TodoAdapter
 
     override fun initViews() {
+        setupSearchBar()
         onClickAddTodo()
     }
 
@@ -59,9 +64,21 @@ class MainActivity : BaseActivity<TodoViewModel, ActivityMainBinding>() {
     }
 
     private fun setupTodoList(itemList: ArrayList<Todo>) = with(binding.rvTodo) {
-        adapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) }, { onMarkAsDone(it) })
+        todoAdapter = TodoAdapter(itemList, { onCLickItem(it) }, { onDeleteItem(it) }, { onUpdateItem(it) }, { onMarkAsDone(it) })
+        adapter = todoAdapter
         layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
+    }
+
+    private fun setupSearchBar() = with(binding.searchBar) {
+        addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                todoAdapter.filter.filter(s.toString())
+                Toast.makeText(this@MainActivity, "afterTextChanged: $s", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun onClickAddTodo() = with(binding.faAddTodo) {
