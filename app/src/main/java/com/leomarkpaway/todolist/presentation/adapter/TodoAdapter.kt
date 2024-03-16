@@ -51,7 +51,7 @@ class TodoAdapter(
                notifyDataSetChanged()
            }
 
-           if (item.status == false) {
+           if (item.isDone == false) {
                checkBox.isChecked = false
            } else {
                tvTitle.paintFlags = tvTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

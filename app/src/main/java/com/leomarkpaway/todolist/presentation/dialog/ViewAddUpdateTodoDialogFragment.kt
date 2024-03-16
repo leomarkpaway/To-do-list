@@ -9,8 +9,8 @@ import com.leomarkpaway.todolist.R
 import com.leomarkpaway.todolist.TodoApp
 import com.leomarkpaway.todolist.common.base.BaseDialogFragment
 import com.leomarkpaway.todolist.common.enum.ArgKey.ADD_TODO
-import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
 import com.leomarkpaway.todolist.common.enum.ArgKey.UPDATE_TODO
+import com.leomarkpaway.todolist.common.enum.ArgKey.VIEW_TODO
 import com.leomarkpaway.todolist.common.enum.Pattern.DATE
 import com.leomarkpaway.todolist.common.enum.Pattern.DAY_NAME
 import com.leomarkpaway.todolist.common.enum.Pattern.TIME
@@ -63,6 +63,8 @@ class ViewAddUpdateTodoDialogFragment(private val context: Context) : BaseDialog
         val time = item.time
         val date = item.dateMillis.convertMillis(calendar, DATE.id)
         val formattedDateTime = context.getString(R.string.input_holder_time_and_date, dayName, time, date)
+        tvStatus.text = if (item.isDone == true) getString(R.string.todo_status, "done")
+        else getString(R.string.todo_status, "pending")
 
         edtTitle.setText(item.title)
         edtDateTime.setText(formattedDateTime)
@@ -77,6 +79,7 @@ class ViewAddUpdateTodoDialogFragment(private val context: Context) : BaseDialog
             edtTitle.isFocusable = false
             edtDescription.isFocusable = false
             tvLabelDescription.visibility = View.VISIBLE
+            tvStatus.visibility = View.VISIBLE
             viewModel.updateIsDisableDatePicker(true)
 
             val hintDescription = edtDescription.hint
@@ -89,12 +92,14 @@ class ViewAddUpdateTodoDialogFragment(private val context: Context) : BaseDialog
         if (args!!.getBoolean(ADD_TODO.id)) {
             tvTitle.text = getString(R.string.dialog_title_add_todo)
             btnSubmit.text = getText(R.string.btn_submit)
+            tvStatus.visibility = View.GONE
             viewModel.updateIsDisableDatePicker(false)
         }
 
         if (args!!.getBoolean(UPDATE_TODO.id)) {
             tvTitle.text = getString(R.string.dialog_title_update_todo)
             btnSubmit.text = getText(R.string.btn_update)
+            tvStatus.visibility = View.GONE
             btnSubmit.background.setTint(ContextCompat.getColor(requireContext(), R.color.dark_cyan))
             viewModel.updateIsDisableDatePicker(false)
         }

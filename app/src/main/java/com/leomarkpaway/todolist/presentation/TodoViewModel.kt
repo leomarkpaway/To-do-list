@@ -48,7 +48,7 @@ class TodoViewModel(private val todoRepository: TodoRepository) : ViewModel() {
 
     fun updateMarkAsDone(todo: Todo) {
         viewModelScope.launch(Dispatchers.IO) {
-            val todoCopy = if (todo.status == false) todo.copy(status = true) else todo.copy(status = false)
+            val todoCopy = if (todo.isDone == false) todo.copy(isDone = true) else todo.copy(isDone = false)
             todoRepository.updateTodo(todoCopy)
         }
     }
